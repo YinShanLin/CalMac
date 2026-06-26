@@ -9,6 +9,7 @@
 </p>
 
 <p align="center">
+  <a href="releases/日历_0.1.0_aarch64.dmg"><img src="https://img.shields.io/badge/下载-v0.1.0-blue?logo=apple" /></a>
   <img src="https://img.shields.io/badge/Tauri-2.11-ffc131" />
   <img src="https://img.shields.io/badge/Vue-3.5-4fc08d" />
   <img src="https://img.shields.io/badge/TypeScript-6.0-3178c6" />
@@ -75,7 +76,9 @@ npm run tauri dev
 npm run tauri build
 ```
 
-构建产物位于 `src-tauri/target/release/bundle/macos/日历.app`。
+构建产物位于 `src-tauri/target/release/bundle/dmg/日历_版本号_aarch64.dmg`。
+
+> 如需预构建的 DMG 安装包，请从 [`releases/`](releases/) 目录下载。
 
 ## 项目结构
 
