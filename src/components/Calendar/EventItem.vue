@@ -30,7 +30,7 @@ const eventColor = computed(() => props.event.color || "#007aff");
   gap: 5px;
   padding: 2px 6px 2px 0;
   border-radius: 5px;
-  font-size: 11px;
+  font-size: inherit;
   overflow: hidden;
   cursor: pointer;
   background-color: color-mix(in srgb, var(--event-color) 14%, transparent);

@@ -47,7 +47,7 @@ function goToToday() {
 </script>
 
 <template>
-  <aside class="todo-panel">
+  <aside class="todo-panel" @contextmenu.prevent>
     <div class="panel-header">
       <h2 class="panel-title">待办事项</h2>
     </div>

@@ -10,6 +10,36 @@ const calendarStore = useCalendarStore();
 const todoStore = useTodoStore();
 const currentDate = ref(new Date());
 
+const todoPanelWidth = ref(parseInt(localStorage.getItem("todoPanelWidth") || "300", 10));
+const isResizing = ref(false);
+
+function startResize(e: MouseEvent) {
+  isResizing.value = true;
+  document.body.style.cursor = "col-resize";
+  document.body.style.userSelect = "none";
+
+  const startX = e.clientX;
+  const startWidth = todoPanelWidth.value;
+
+  function onMouseMove(ev: MouseEvent) {
+    const delta = startX - ev.clientX;
+    const newWidth = Math.max(220, Math.min(500, startWidth + delta));
+    todoPanelWidth.value = newWidth;
+  }
+
+  function onMouseUp() {
+    isResizing.value = false;
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+    localStorage.setItem("todoPanelWidth", String(todoPanelWidth.value));
+    document.removeEventListener("mousemove", onMouseMove);
+    document.removeEventListener("mouseup", onMouseUp);
+  }
+
+  document.addEventListener("mousemove", onMouseMove);
+  document.addEventListener("mouseup", onMouseUp);
+}
+
 onMounted(async () => {
   await Promise.all([
     calendarStore.loadMonth(currentDate.value),
@@ -27,7 +57,12 @@ watch(currentDate, (d) => {
     <Header :current-date="currentDate" @update:date="currentDate = $event" />
     <div class="main-content">
       <MonthView :current-date="currentDate" />
-      <TodoPanel />
+      <div
+        class="resizer"
+        :class="{ active: isResizing }"
+        @mousedown="startResize"
+      />
+      <TodoPanel :style="{ width: todoPanelWidth + 'px' }" />
     </div>
   </div>
 </template>
@@ -65,6 +100,21 @@ body {
   display: flex;
   flex: 1;
   overflow: hidden;
+}
+
+.resizer {
+  width: 5px;
+  cursor: col-resize;
+  background-color: transparent;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.resizer:hover,
+.resizer.active {
+  background-color: #007aff;
 }
 
 ::-webkit-scrollbar {

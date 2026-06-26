@@ -51,6 +51,11 @@ function goToNextMonth() {
       </button>
     </div>
     <div class="header-right">
+      <div class="font-size-controls">
+        <button class="btn-font" @click="calendarStore.setFontSize(calendarStore.fontSize - 1)" :disabled="calendarStore.fontSize <= 11" title="缩小字体">A−</button>
+        <span class="font-size-value">{{ calendarStore.fontSize }}</span>
+        <button class="btn-font" @click="calendarStore.setFontSize(calendarStore.fontSize + 1)" :disabled="calendarStore.fontSize >= 18" title="放大字体">A+</button>
+      </div>
       <div class="week-start-toggle">
         <button
           class="toggle-btn"
@@ -78,14 +83,58 @@ function goToNextMonth() {
   border-bottom: 1px solid #ececee;
 }
 
-.header-left,
-.header-right {
-  width: 130px;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .header-right {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.font-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-font {
+  width: 26px;
+  height: 26px;
+  border: 1px solid #d2d2d7;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #1d1d1f;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-font:hover:not(:disabled) {
+  background-color: #f5f5f7;
+  border-color: #b0b0b5;
+}
+
+.btn-font:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.font-size-value {
+  font-size: 11px;
+  font-weight: 500;
+  color: #86868b;
+  min-width: 18px;
+  text-align: center;
 }
 
 .btn-today {

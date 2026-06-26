@@ -16,10 +16,16 @@ export const useCalendarStore = defineStore("calendar", () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const weekStartsOnMonday = ref(localStorage.getItem("weekStartsOnMonday") !== "false");
+  const fontSize = ref(parseInt(localStorage.getItem("calendarFontSize") || "13", 10));
 
   function toggleWeekStart() {
     weekStartsOnMonday.value = !weekStartsOnMonday.value;
     localStorage.setItem("weekStartsOnMonday", String(weekStartsOnMonday.value));
+  }
+
+  function setFontSize(size: number) {
+    fontSize.value = Math.max(11, Math.min(18, size));
+    localStorage.setItem("calendarFontSize", String(fontSize.value));
   }
 
   const eventsByDate = computed(() => {
@@ -118,8 +124,10 @@ export const useCalendarStore = defineStore("calendar", () => {
     loading,
     error,
     weekStartsOnMonday,
+    fontSize,
     eventsByDate,
     toggleWeekStart,
+    setFontSize,
     loadMonth,
     loadEvents,
     createEvent,

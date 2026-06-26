@@ -24,6 +24,10 @@ const props = defineProps<{
 const calendarStore = useCalendarStore();
 const todoStore = useTodoStore();
 
+const baseFont = computed(() => `${calendarStore.fontSize}px`);
+const dayNumFont = computed(() => `${calendarStore.fontSize + 2}px`);
+const badgeFont = computed(() => `${Math.max(9, calendarStore.fontSize - 4)}px`);
+
 const contextMenu = ref({
   show: false,
   x: 0,
@@ -158,7 +162,16 @@ async function createGlobalTodo() {
 </script>
 
 <template>
-  <div class="month-view" @click="closeContextMenu">
+  <div
+    class="month-view"
+    @click="closeContextMenu"
+    :style="{
+      '--font-base': baseFont,
+      '--font-day-num': dayNumFont,
+      '--font-badge': badgeFont,
+      '--font-weekday': `calc(${baseFont} - 2px)`,
+    }"
+  >
     <div class="week-header">
       <div
         v-for="(day, index) in weekDays"
@@ -258,7 +271,7 @@ async function createGlobalTodo() {
 .week-day-name {
   padding: 10px;
   text-align: center;
-  font-size: 11px;
+  font-size: var(--font-weekday, 11px);
   font-weight: 600;
   color: #86868b;
   letter-spacing: 0.5px;
@@ -278,11 +291,15 @@ async function createGlobalTodo() {
 .calendar-cell {
   border-right: 1px solid #f0f0f2;
   border-bottom: 1px solid #f0f0f2;
-  padding: 6px 6px 4px;
+  padding: 6px;
   min-height: 96px;
   cursor: pointer;
   transition: background-color 0.15s ease;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .calendar-cell:hover {
@@ -317,7 +334,6 @@ async function createGlobalTodo() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 6px;
   gap: 3px;
 }
 
@@ -327,7 +343,7 @@ async function createGlobalTodo() {
   justify-content: center;
   width: 26px;
   height: 26px;
-  font-size: 13px;
+  font-size: var(--font-day-num, 13px);
   font-weight: 500;
   color: #1d1d1f;
   border-radius: 50%;
@@ -357,7 +373,7 @@ async function createGlobalTodo() {
 }
 
 .holiday-badge {
-  font-size: 9px;
+  font-size: var(--font-badge, 9px);
   color: #ff3b30;
   background-color: #ffe5e5;
   padding: 1px 5px;
@@ -373,10 +389,11 @@ async function createGlobalTodo() {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  font-size: var(--font-base, 12px);
 }
 
 .more-events {
-  font-size: 11px;
+  font-size: var(--font-base, 11px);
   color: #86868b;
   padding: 1px 4px;
   font-weight: 500;
